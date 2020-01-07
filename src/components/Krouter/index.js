@@ -6,12 +6,26 @@ let _Vue
 class KRouter {
     constructor(options) {
         this.$options = options
-        this.current = "/"
+        //_Vue.util.defineReactive(this, "current", "/")
+        this.app = new _Vue({
+            data: {
+                current: "/"
+            }
+        })
+        // this.current = "/"
         if (window) {
             window.addEventListener("hashchange", () => {
-                this.current = window.location.hash.slice(1)
+                this.app.current = window.location.hash.slice(1)
+            })
+            window.addEventListener("load", () => {
+                this.app.current = window.location.hash.slice(1)
             })
         }
+
+        this.mapRoute = {}
+        options.routes.map(route => {
+            this.mapRoute[route.path] = route.component
+        })
 
     }
 

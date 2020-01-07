@@ -1,6 +1,11 @@
-import Home from '@/views/Home.vue'
 export default {
     render: function (h) {
-        return h(Home)
+        let {
+            app,
+            mapRoute
+        } = this.$router;
+
+        let comp = mapRoute[app.current] || null
+        return h(comp)
     }
 }

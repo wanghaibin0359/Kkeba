@@ -6,7 +6,6 @@ export default {
         }
     },
     render: function (h) {
-        console.log(this.$slots)
         return h("a", {
             attrs: {
                 href: '#' + this.to,
