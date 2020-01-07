@@ -9,6 +9,8 @@
 <script>
 import Schema from "async-validator";
 export default {
+    componentName:"KFormItem",
+    name:"KFormItem",
     inject: ["form"],
     props: {
         label: {

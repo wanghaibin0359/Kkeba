@@ -19,6 +19,8 @@
 import KForm from "./form";
 import KInput from "./Kinput";
 import KFormItem from "./KFormItem";
+import Create from "../../util/create";
+import Notice from "../Notice";
 export default {
     provide() {
         return {
@@ -49,9 +51,15 @@ export default {
         onClick() {
             this.$refs.form.validator(boolean => {
                 if (boolean) {
-                    console.log("chenggong");
+                    Create(Notice, {
+                        title: "成功",
+                        message: "登陆成功，"
+                    }).show();
                 } else {
-                    console.log("失败");
+                    Create(Notice, {
+                        title: "失败了把，",
+                        message: "失败了把，"
+                    }).show();
                 }
             });
         }
