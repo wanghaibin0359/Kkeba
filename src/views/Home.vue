@@ -2,8 +2,8 @@
     <div class="home">
         <img alt="Vue logo" src="../assets/logo.png" />
         <HelloWorld msg="Welcome to Your Vue.js App" />
-        <h1 @click="$store.commit('increase')">{{$store.state}}</h1>
-        <h1 @click="$store.dispatch('increase')">{{$store.state}}</h1>
+        <h1 @click="$store.commit('increase')">{{$store.state.count}}</h1>
+        <h1 @click="$store.dispatch('increase')">{{$store.state.count}}</h1>
     </div>
 </template>
 
