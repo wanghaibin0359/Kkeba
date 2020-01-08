@@ -5,16 +5,19 @@ let _Vue
 
 class KRouter {
     constructor(options) {
+        this.index = 0
         this.$options = options
         _Vue.util.defineReactive(this, "matched", [])
         // _Vue.util.defineReactive(this, "current", "/")
-        this.current = window.location.hash.slice(1)
+        this.current = window.location.hash.slice(1) || "/"
         if (window) {
             window.addEventListener("hashchange", () => {
-                this.current = window.location.hash.slice(1)
+                this.matched = []
+                this.current = window.location.hash.slice(1) || "/"
+                this.match()
             })
             window.addEventListener("load", () => {
-                this.current = window.location.hash.slice(1)
+                this.current = window.location.hash.slice(1) || "/"
             })
         }
 
@@ -24,10 +27,9 @@ class KRouter {
         // })
         this.match()
 
-
     }
     match(routes = this.$options.routes) {
-      
+
         for (const route of routes) {
             if (route.path == "/" && this.current == '/') {
                 this.matched.push(route)
@@ -38,6 +40,7 @@ class KRouter {
                 if (route.children) {
                     this.match(route.children)
                 }
+                return
             }
         }
     }

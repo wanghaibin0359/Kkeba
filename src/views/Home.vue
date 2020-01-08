@@ -4,6 +4,7 @@
         <HelloWorld msg="Welcome to Your Vue.js App" />
         <h1 @click="$store.commit('increase')">{{$store.state.count}}</h1>
         <h1 @click="$store.dispatch('increase')">{{$store.state.count}}</h1>
+        <h1>{{$store.getters.double}}</h1>
     </div>
 </template>
 
@@ -15,6 +16,9 @@ export default {
     name: "home",
     components: {
         HelloWorld
+    },
+    created() {
+        console.log("created" + this.$store.getters.double);
     }
 };
 </script>
