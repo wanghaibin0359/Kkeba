@@ -6,30 +6,44 @@ let _Vue
 class KRouter {
     constructor(options) {
         this.$options = options
-        //_Vue.util.defineReactive(this, "current", "/")
-        this.app = new _Vue({
-            data: {
-                current: "/"
-            }
-        })
-        // this.current = "/"
+        _Vue.util.defineReactive(this, "matched", [])
+        // _Vue.util.defineReactive(this, "current", "/")
+        this.current = window.location.hash.slice(1)
         if (window) {
             window.addEventListener("hashchange", () => {
-                this.app.current = window.location.hash.slice(1)
+                this.current = window.location.hash.slice(1)
             })
             window.addEventListener("load", () => {
-                this.app.current = window.location.hash.slice(1)
+                this.current = window.location.hash.slice(1)
             })
         }
 
-        this.mapRoute = {}
-        options.routes.map(route => {
-            this.mapRoute[route.path] = route.component
-        })
+        // this.mapRoute = {}
+        // options.routes.map(route => {
+        //     this.mapRoute[route.path] = route.component
+        // })
+        this.match()
+
 
     }
-
+    match(routes = this.$options.routes) {
+      
+        for (const route of routes) {
+            if (route.path == "/" && this.current == '/') {
+                this.matched.push(route)
+                return
+            }
+            if (route.path != "/" && this.current.indexOf(route.path) > -1) {
+                this.matched.push(route)
+                if (route.children) {
+                    this.match(route.children)
+                }
+            }
+        }
+    }
 }
+
+
 
 KRouter.install = function (Vue) {
     _Vue = Vue

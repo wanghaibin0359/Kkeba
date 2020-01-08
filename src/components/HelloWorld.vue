@@ -1,10 +1,8 @@
 <template>
     <div class="hello">
         <Form></Form>
-       
     </div>
 </template>
-
 <script>
 import Form from "./form/index";
 export default {
