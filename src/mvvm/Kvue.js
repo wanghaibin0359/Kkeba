@@ -27,8 +27,13 @@ function observe(obj) {
     if (typeof obj !== 'object' || obj == null) {
         return
     }
-    // 进行 响应式绑定
-    Object.keys(obj).forEach(key => {
-        defineReactive(obj, key, obj[key])
-    })
+    if (Array.isArray(obj)) {
+        copyArrayProto(obj)
+    } else {
+         // 进行 响应式绑定
+         Object.keys(obj).forEach(key => {
+             defineReactive(obj, key, obj[key])
+         })
+    }
 }
+

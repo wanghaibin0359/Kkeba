@@ -17,7 +17,7 @@ class Compile {
             }
             if (this.isInterpolation(Node)) {
                 //修改文本
-                 this.update(Node, RegExp.$1, "text")
+                this.update(Node, RegExp.$1, "text")
             }
             if (Node.childNodes && Node.childNodes.length > 0) {
                 this.compile(Node);
@@ -39,13 +39,21 @@ class Compile {
                 exp = attr.value;
             if (this.isDirective(attrName)) {
                 let dir = attrName.substr(2)
-                // this[dir] && this[dir](node,exp)
-                this.update(node, exp, dir)
+                debugger
+                 this[dir] && this[dir](node, exp, dir)
+            }
+
+            if (this.isEvent(attrName)) {
+                let dir = attrName.substr(1)
+                this.EventHandler(node,exp, dir)
             }
         })
     }
     isDirective(attr) {
         return attr.indexOf("k-") == 0;
+    }
+    isEvent(attr) {
+        return attr.indexOf("@") == 0
     }
     update(node, exp, dir) {
         const fn = this[dir + "Updater"]
@@ -54,9 +62,26 @@ class Compile {
             fn && fn(node, val)
         })
     }
+    //@click
+    EventHandler(node,exp, event) {
+        let methods = this.vm.$options.methods[exp].bind(this.vm);
+        node.addEventListener(event, methods)
+    }
+    //k-model
+    model(node, exp, dir) {
+        node.addEventListener("input", (e => {
+            this.vm[exp]=e.target.value
+        }))
+        this.update(node, exp, dir)
+    }
     //k-text
-    text(node, exp) {
-        node.textContent = this.vm[exp]
+    text(node, exp, dir) {
+       this.update(node,exp,dir)
+    }
+
+    modelUpdater(node,val) {
+        //input事件
+        node.value = val
     }
 
     textUpdater(node, val) {
